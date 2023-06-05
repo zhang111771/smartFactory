@@ -54,7 +54,8 @@ export default class City{
           child.material.emissiveIntensity=15
         }
       })
-      this.showFighter()
+      // this.showFighter()
+      this.floor1Group.visible = false;
       this.scene.add(gltf.scene)
     })    
     this.loader.load('./model/wall.glb',(gltf)=>{
@@ -66,11 +67,13 @@ export default class City{
     this.loader.load('./model/Fighter.glb',(gltf)=>{
       this.fighterGroup=gltf.scene
       this.fighterGroup.visible=false
-      this.fighterGroup.position.set(3,42,68)
       scene.add(this.fighterGroup)
+      this.fighterGroup.position.set(3,42,68)
+
       this.fighterGroup.traverse((child)=>{
         if(child.isMesh){
           child.material.emissiveIntensity=15
+          child.position2 = child.position.clone();
         }
       })
 
@@ -93,10 +96,15 @@ export default class City{
               })
              }else{
               this.floor2Group.visible=true
+              this.floor2Group.visible = true;
+              this.floor2Tags.forEach((tag) => {
+                tag.visible = true;
+              });
              }
           }
           
       })
+      // this.showFighter();
    
     })   
 
@@ -123,7 +131,12 @@ export default class City{
     // this.scene.add(objectCSS3D)
     return objectCSS3D
   }
-  update(){}
+  update(time) {
+    if (this.mixer) {
+      // console.log(time);
+      this.mixer.update(time);
+    }
+  }
   showFloor1(){
     this.floor1Group.visible=true
   }
@@ -223,7 +236,7 @@ export default class City{
  
           if(child.isMesh){
             positions[n].multiplyScalar(20)
-            child.position2=child.position.clone()
+            // child.position2=child.position.clone()
             gsap.to(child.position,{
               x:positions[n].x,
               z:positions[n].z,
@@ -269,7 +282,7 @@ export default class City{
         )
         for(let i=0;i<child.geometry.attributes.position.count;i++){
           randomPositionArray[i*3+0]=(Math.random()*2-1)*10;
-          randomPositionArray[i*3+1]=(Math.random()*2-1)*10;
+          randomPositionArray[i*3+1]=(Math.random()*2-1)*10+50;
           randomPositionArray[i*3+2]=(Math.random()*2-1)*10;
           
         }
@@ -291,7 +304,7 @@ export default class City{
   createPoints(object3d){
     if(!this.fighterPointsGroup){
       this.fighterPointsGroup=this.transformPoints(object3d)
-      // this.fighterPointsGroup.position.set(0,50,0)
+      this.fighterPointsGroup.position.set(0,50,0)
       this.scene.add(this.fighterPointsGroup)
     }
   
@@ -301,7 +314,7 @@ export default class City{
     const texture=new THREE.TextureLoader().load('./assets/particles/1.png')
   
     const group=new THREE.Group()
-
+    
     function createPoints(object3d,newObjct3d){
       if(object3d.children.length>0){
         object3d.children.forEach((child)=>{
@@ -332,7 +345,7 @@ export default class City{
               },
               transparent:true,
               blending:THREE.AdditiveBlending,
-              depthWrite:false
+              depthTest:false
             })
 
             const points=new THREE.Points(child.geometry,material)
