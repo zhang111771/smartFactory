@@ -15,7 +15,8 @@ window.addEventListener('resize',()=>{
 
   //设置渲染器的像素比例
   rendererModule.renderer.setPixelRatio(window.devicePixelRatio)
+  console.log( rendererModule.css3drenderer)
   rendererModule.css3drenderer.setSize(window.innerWidth,window.innerHeight)
-  rendererModule.css3drenderer.setPixelRatio(window.devicePixelRatio)
+
 
 })

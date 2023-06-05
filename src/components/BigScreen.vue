@@ -1,74 +1,54 @@
 <template>
     <div class="bigScreen">
-        <div class="header">张志豪智慧城市管理系统平台</div>
+        <div class="header">张志豪智慧工厂管理系统平台</div>
         <div class="main">
             <div class="left">
                 <div class="cityEvent" >
-                    <h3><span>热气球控制</span></h3>
-                    <h1 @click="toggleAction(0)">
+                    <h3><span>厂房控制</span></h3>
+                    <h1 @click="showWall()">
                         <img src="../assets/bg/bar.svg" class="icon" />
-                        <span>设置热气球一横穿园区的动画显示</span>
+                        <span>厂房外形展示</span>
                     </h1>
-                    <h1 @click="toggleAction(1)">
+                    <h1 @click="showAll()">
                         <img src="../assets/bg/bar.svg" class="icon" />
-                        <span>设置热气球以环绕园区进行运动</span>
+                        <span>厂房分层展开</span>
                     </h1>
                     <div class="footerBorder"></div>
                 </div>
                 <div class="cityEvent" >
-                    <h3><span>相机控制</span></h3>
-                    <h1 @click="toggleCamera('default')">
+                    <h3><span>展示楼层</span></h3>
+                    <h1 @click="showFloor1()">
                         <img src="../assets/bg/bar.svg" class="icon" />
-                        <span>默认的相机视角</span>
+                        <span>展示第一层楼</span>
                     </h1>
-                    <h1 @click="toggleCamera('carcamera_Orientation')">
+                    <h1 @click="showFloor2()">
                         <img src="../assets/bg/bar.svg" class="icon" />
-                        <span>设置相机追随汽车导览园区</span>
+                        <span>展示第二层楼</span>
                     </h1>
-                    <h1 @click="toggleCamera('rightcamera_Orientation')">
-                        <img src="../assets/bg/bar.svg" class="icon" />
-                        <span>查看汽车司机视角</span>
-                    </h1>
+                
                     <div class="footerBorder"></div>
                 </div>
             </div>
             <div class="right">
-                <div class="cityEvent list">
-                    <h3>
-                        <span>切换园区观览模式</span>
-                    </h3>
-                    <ul>
-                        <li @click="toggleControls('Orbit')">
-                            <h1>
-                                <div>
-                                    <img class="icon" src="../assets/bg/dianli.svg" alt="">
-                                    <span></span>
-                                </div>
-                                <span class="time">使用轨道控制器查看园区</span>
-                            </h1>
-                            <p></p>
-                        </li>
-                        <li @click="toggleControls('Fly')">
-                            <h1>
-                                <div>
-                                    <img class="icon" src="../assets/bg/dianli.svg" alt="">
-                                    <span></span>
-                                </div>
-                                <span class="time">飞行观览</span>
-                            </h1>
-                            <p></p>
-                        </li>
-                        <li @click="toggleControls('FirstPerson')">
-                            <h1>
-                                <div>
-                                    <img class="icon" src="../assets/bg/dianli.svg" alt="">
-                                    <span></span>
-                                </div>
-                                <span class="time">第一人称</span>
-                            </h1>
-                            <p></p>
-                        </li>
-                    </ul>
+              <div class="cityEvent" >
+                  
+                    <h1 @click="flatFighter()">
+                        <img src="../assets/bg/bar.svg" class="icon" />
+                        <span>展开/恢复飞机</span>
+                    </h1>
+                    <h1 @click="pointsFighter()">
+                        <img src="../assets/bg/bar.svg" class="icon" />
+                        <span>生成粒子飞机</span>
+                    </h1>
+                    <h1 @click="pointsBlast()">
+                        <img src="../assets/bg/bar.svg" class="icon" />
+                        <span>粒子爆炸</span>
+                    </h1>
+                    <h1 @click="pointsBack()">
+                        <img src="../assets/bg/bar.svg" class="icon" />
+                        <span>粒子恢复</span>
+                    </h1>
+                    <div class="footerBorder"></div>
                 </div>
             </div>
         </div>
@@ -78,23 +58,42 @@
 
 import {ref} from 'vue'
 import eventHub from '@/utils/EeventHub';
-const imgs={
-    '电力':require('@/assets/bg/dianli.svg'),
-    '火警':require('@/assets/bg/fire.svg'),
-    '治安':require('@/assets/bg/jingcha.svg')
+let isOpen=false
+const showWall=()=>{
+  eventHub.emit('showWall')
 }
-const toggleEvent=(event)=>{
-  eventHub.emit('eventClick',event)
+const showFloor1=()=>{
+  eventHub.emit('showFloor1')
 
 }
-const toggleAction=(i)=>{
-  eventHub.emit('actionClick',i)
+const showFloor2=()=>{
+  eventHub.emit('showFloor2')
+
 }
-const toggleCamera=(name)=>{
-eventHub.emit('toggleCamera',name)
+
+
+
+const showAll=()=>{
+  if(!isOpen){
+    isOpen=true
+    eventHub.emit('showAll')
+  }else{
+    isOpen=false
+    eventHub.emit('hideAll')
+  }
+
 }
-const toggleControls=(control)=>{
-  eventHub.emit('toggleControls',control)
+const flatFighter=()=>{
+  eventHub.emit('flatFighter')
+}
+const pointsFighter=()=>{
+  eventHub.emit('pointsFighter')
+}
+const pointsBlast=()=>{
+  eventHub.emit('pointsBlast')
+}
+const pointsBack=()=>{
+  eventHub.emit('pointsBack')
 }
 </script>
 <style scoped>
